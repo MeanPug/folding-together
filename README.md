@@ -40,5 +40,5 @@ docker tag frontend-payments-registration:$VERSION 451298871710.dkr.ecr.us-east-
 docker push 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-registration:$VERSION
 
 # upgrade the release
-helm upgrade --install frontend-registration-payments -f helm/prod-values.yaml --set image.tag=$VERSION
+helm upgrade --install frontend-registration-payments helm/frontend-registration-payments --set image.tag=$VERSION
 ```
