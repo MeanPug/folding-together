@@ -1,4 +1,4 @@
-# folding-together
+# Folding@Together
 
 Democratizing folding@home (and potentially other networks like rosetta@home)
 
@@ -25,3 +25,19 @@ In order to overcome the hurdles of (1) and (2), we democratize folding by allow
 2. Scheduler to map user contributions to compute resource allocation
 3. Registration and payments interface
 4. Social recognition and feedback
+
+## Running Deployments
+### Deploying Frontend (Registration and Payments)
+_Prerequisites_ - In order to deploy, make sure you have [helm](https://helm.sh/) installed and are set up in the AWS Auth configmap to authenticate with the cluster.
+```
+# register docker client
+$(aws ecr get-login --no-include-email --region us-east-1)
+
+# build and upload
+docker build -t frontend-payments-registration:<VERSION> .
+docker tag frontend-payments-registration:<VERSION> 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-registration:<VERSION>
+docker push 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-registration:<VERSION>
+
+# upgrade the release
+helm upgrade --install frontend-registration-payments -f helm/prod-values.yaml --set image.tag=<VERSION>
+```
