@@ -25,3 +25,11 @@ In order to overcome the hurdles of (1) and (2), we democratize folding by allow
 2. Scheduler to map user contributions to compute resource allocation
 3. Registration and payments interface
 4. Social recognition and feedback
+
+## Running Deployments
+### Deploying Frontend (Registration and Payments)
+_Prerequisites_ - In order to deploy, make sure you have [helm](https://helm.sh/) installed and are set up in the AWS Auth configmap to authenticate with the cluster.
+```
+# upgrade the release
+helm upgrade --install frontend-registration-payments -f helm/prod-values.yaml
+```
