@@ -1,4 +1,4 @@
-# folding-together
+# Folding@Together
 
 Democratizing folding@home (and potentially other networks like rosetta@home)
 
