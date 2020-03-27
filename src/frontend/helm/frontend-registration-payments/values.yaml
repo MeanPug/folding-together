@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-registration
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 nginx:
   hosts:
