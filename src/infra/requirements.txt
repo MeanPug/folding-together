@@ -1,0 +1,2 @@
+sceptre>=2.3,<2.4
+troposphere>=2.6,<2.7

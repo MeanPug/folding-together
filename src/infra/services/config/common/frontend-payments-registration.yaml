@@ -1,0 +1,4 @@
+template_path: stack_frontend_payments_registration.py
+parameters:
+  Environment: prod
+  ServiceName: FrontendPaymentsRegistration
