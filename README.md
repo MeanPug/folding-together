@@ -34,10 +34,11 @@ _Prerequisites_ - In order to deploy, make sure you have [helm](https://helm.sh/
 $(aws ecr get-login --no-include-email --region us-east-1)
 
 # build and upload
-docker build -t frontend-payments-registration:<VERSION> .
-docker tag frontend-payments-registration:<VERSION> 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-registration:<VERSION>
-docker push 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-registration:<VERSION>
+VERSION=<VERSION>
+docker build -t frontend-payments-registration:$VERSION .
+docker tag frontend-payments-registration:$VERSION 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-registration:$VERSION
+docker push 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-registration:$VERSION
 
 # upgrade the release
-helm upgrade --install frontend-registration-payments -f helm/prod-values.yaml --set image.tag=<VERSION>
+helm upgrade --install frontend-registration-payments helm/frontend-registration-payments --set image.tag=$VERSION
 ```
