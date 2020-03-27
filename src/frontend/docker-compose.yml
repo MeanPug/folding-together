@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -17,8 +17,11 @@ services:
     ports:
       - "8000:8000"
     environment:
+      DB_HOST: db
       DB_PASSWORD: postgres
       DB_USER: postgres
       DB_NAME: postgres
     depends_on:
       - db
+volumes:
+  pgdata:
