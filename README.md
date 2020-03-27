@@ -4,7 +4,7 @@ Democratizing folding@home (and potentially other networks like rosetta@home)
 
 ## Purpose
 
-Though it isn't new, the Folding@Home project allows individuals to donate their computing resources to researchers searching for cures to diseases (like - and including - [Covid-19](https://foldingathome.org/covid19/)). These resources allow researchers to run computationally expensive simulations that illustrate how atoms in a protein move relative to each other, allowing for therapeutic discoveries.
+Though it isn't new, the Folding@Home project allows individuals to donate their computing resources to researchers searching for cures to diseases (like - and including - [COVID-19](https://foldingathome.org/covid19/)). These resources allow researchers to run computationally expensive simulations that illustrate how atoms in a protein move relative to each other, allowing for therapeutic discoveries.
 
 However, there are two big issues preventing more people from helping:
 
@@ -13,7 +13,7 @@ However, there are two big issues preventing more people from helping:
 
 ### What Folding Together Does
 
-In order to overcome the hurdles of (1) and (2), we democratize folding by allowing anyone to participate via microdonations. These donations are then used to purchase computation resources on the cloud on the individuals' behalf. To incentivize future donations, we integrate with Facebook to allow the user to share their contribution.
+In order to overcome the hurdles of (1) and (2), we democratize folding by allowing anyone to participate via micro-donations. These donations are then used to purchase computation resources on the cloud on the individuals' behalf. To incentivize future donations, we integrate with Facebook to allow the user to share their contribution.
 
 ## Technical
 
