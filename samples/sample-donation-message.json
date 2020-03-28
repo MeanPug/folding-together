@@ -1,0 +1,9 @@
+{
+  "donor": {
+    "name": "Joe_Donor",
+    "id": 123
+  },
+  "donation": {
+    "amount": 100
+  }
+}
