@@ -27,14 +27,23 @@ Resources:
               Service: !Sub lambda.${AWS::URLSuffix}
             Action: sts:AssumeRole
       Policies:
-        - PolicyName: BalanceUpdates
+        - PolicyName: GetBalance
           PolicyDocument:
             Version: 2012-10-17
             Statement:
               - Effect: Allow
-                Action:
-                  - cloudwatch:GetMetricData
+                Action: cloudwatch:GetMetricData
                 Resource: '*'
+        - PolicyName: PutBalance
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: cloudwatch:PutMetricData
+                Resource: '*'
+                Condition:
+                  StringEquals:
+                    cloudwatch:namespace: FT-Bank
         - PolicyName: QueueProcessing
           PolicyDocument:
             Version: 2012-10-17

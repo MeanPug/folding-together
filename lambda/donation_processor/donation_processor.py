@@ -5,7 +5,7 @@ import json
 import os
 
 
-metric_namespace = 'Bank'
+metric_namespace = 'FT-Bank'
 metric_name = 'Balance'
 metric_dimension_name = 'Cause'
 metric_dimension_value = 'Any'
@@ -49,38 +49,46 @@ def update_balance(amount):
         # ScanBy='TimestampDescending'|'TimestampAscending',
         # MaxDatapoints=123
     )
-    print(response)
+    new_value = 0
+    if len(response['MetricDataResults'][0]['Values']) > 0:
+        current_value = response['MetricDataResults'][0]['Values'][0]
+        print(current_value)
+        new_value = current_value + amount
+    else:
+        new_value = amount
 
-    # response = cw_client.put_metric_data(
-    #     Namespace='string',
-    #     MetricData=[
-    #         {
-    #             'MetricName': 'string',
-    #             'Dimensions': [
-    #                 {
-    #                     'Name': 'string',
-    #                     'Value': 'string'
-    #                 },
-    #             ],
-    #             'Timestamp': datetime(2015, 1, 1),
-    #             'Value': 123.0,
-    #             'StatisticValues': {
-    #                 'SampleCount': 123.0,
-    #                 'Sum': 123.0,
-    #                 'Minimum': 123.0,
-    #                 'Maximum': 123.0
-    #             },
-    #             'Values': [
-    #                 123.0,
-    #             ],
-    #             'Counts': [
-    #                 123.0,
-    #             ],
-    #             'Unit': 'Count'|'None',
-    #             'StorageResolution': 123
-    #         },
-    #     ]
-    # )
+    response = cw_client.put_metric_data(
+        Namespace=metric_namespace,
+        MetricData=[
+            {
+                'MetricName': metric_name,
+                'Dimensions': [
+                    {
+                        'Name': metric_dimension_name,
+                        'Value': metric_dimension_value
+                    },
+                ],
+                'Timestamp': datetime.datetime.now(),
+                'Value': new_value,
+                # 'StatisticValues': {
+                #     'SampleCount': 123.0,
+                #     'Sum': 123.0,
+                #     'Minimum': 123.0,
+                #     'Maximum': 123.0
+                # },
+                # 'Values': [
+                #     123.0,
+                # ],
+                # 'Counts': [
+                #     123.0,
+                # ],
+                # 'Unit': 'Count'|'None',
+                # 'StorageResolution': 123
+            },
+        ]
+    )
+
+    return new_value
 
 
 def lambda_handler(event, context):
@@ -94,7 +102,7 @@ def lambda_handler(event, context):
         #     'string',
         # ],
         MaxNumberOfMessages=1,  # TODO handle processing many messages
-        VisibilityTimeout=5,
+        VisibilityTimeout=5,  # TODO adjust as appropriate
         # WaitTimeSeconds=123,
         # ReceiveRequestAttemptId='string'
     )
@@ -103,6 +111,8 @@ def lambda_handler(event, context):
         # TODO handle processing many messages
         message = json.loads(response['Messages'][0]['Body'])
         # print(message['donation']['amount'])
-        update_balance(message['donation']['amount'])
+        new_balance = update_balance(message['donation']['amount'])
+        # TODO delete messages from the queue when complete
+        return 'New value is ' + str(new_balance) + ' cents.'
     else:
         return 'No messages'
