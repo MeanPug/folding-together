@@ -3,5 +3,5 @@ node_modules/
 pgdata/
 __pycache__
 helm/frontend-registration-payments/charts/*
-static/build/
+gateway/static/build/
 
