@@ -129,3 +129,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.getenv('STATIC_ROOT', '/var/www/html/')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
