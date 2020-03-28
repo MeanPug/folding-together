@@ -22,6 +22,8 @@ spec:
         - name: sites-enabled
           configMap:
             name: {{ include "frontend-registration-payments.fullname" . }}-sites-enabled-configmap
+        - name: staticfiles
+          emptyDir: {}
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -37,6 +39,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["python", "manage.py", "collectstatic", "--noinput"]
+          volumeMounts:
+            - name: staticfiles
+              mountPath: /var/www/html/static
           env:
 {{ include "frontend-registration-payments.env" . | indent 12 }}
       containers:
@@ -58,6 +63,8 @@ spec:
           volumeMounts:
             - name: sites-enabled
               mountPath: /etc/nginx/conf.d/
+            - name: staticfiles
+              mountPath: /var/www/html/static
           ports:
             - name: http
               containerPort: 80

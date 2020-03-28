@@ -59,4 +59,6 @@ Common env
     secretKeyRef:
       name: frontend-registration-postgres-creds
       key: postgresql-password
+- name: STATIC_ROOT
+  value: /var/www/html/static
 {{- end -}}

@@ -24,3 +24,9 @@ h3 {
 p, span {
     @apply font-body;
 }
+
+/**-- Buttons --**/
+.btn-primary {
+    transition: all .5s;
+    @apply px-8 py-6 uppercase;
+}
