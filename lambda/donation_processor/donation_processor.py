@@ -30,7 +30,7 @@ def lambda_handler(event, context):
         #     'string',
         # ],
         MaxNumberOfMessages=1,
-        # VisibilityTimeout=123,
+        VisibilityTimeout=60,
         # WaitTimeSeconds=123,
         # ReceiveRequestAttemptId='string'
     )
