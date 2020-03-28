@@ -5,9 +5,19 @@ Description: Bank balance tracking resources
 Resources:
   Queue:
     Type: AWS::SQS::Queue
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W48 ## skip for MVP
+            reason: Queue encryption skipped for MVP
 
   DonationProcessorRole:
     Type: AWS::IAM::Role
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W11
+            reason: CloudWatch actions do not support resource-level permissions.
     Properties:
       AssumeRolePolicyDocument:
         Version: 2012-10-17
@@ -17,6 +27,14 @@ Resources:
               Service: !Sub lambda.${AWS::URLSuffix}
             Action: sts:AssumeRole
       Policies:
+        - PolicyName: BalanceUpdates
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cloudwatch:GetMetricData
+                Resource: '*'
         - PolicyName: QueueProcessing
           PolicyDocument:
             Version: 2012-10-17
