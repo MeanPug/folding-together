@@ -1,0 +1,45 @@
+
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Bank balance tracking resources
+Resources:
+  Queue:
+    Type: AWS::SQS::Queue
+
+  DonationProcessorRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: !Sub lambda.${AWS::URLSuffix}
+            Action: sts:AssumeRole
+      # Policies:
+      #   - PolicyName: S3CURLambdaExecutor
+      #     PolicyDocument:
+      #       Version: 2012-10-17
+      #       Statement:
+      #         - Effect: Allow
+      #           Action:
+      #             - s3:PutBucketNotification
+      #             - s3:GetObject
+      #           Resource:
+      #             - !Sub arn:aws:s3:::${S3BillingBucketName}
+      #             - !Sub arn:aws:s3:::${S3BillingBucketName}/*
+      #         - Effect: Allow
+      #           Action: athena:*
+      #           Resource: '*'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  DonationProcessor:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: folding-together-artifacts
+        S3Key: lambda/donation_processor.zip
+      Handler: donation_processor.lambda_handler
+      Role: !GetAtt DonationProcessorRole.Arn
+      Runtime: python3.8
