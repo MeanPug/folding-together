@@ -67,3 +67,5 @@ Resources:
       Handler: donation_processor.lambda_handler
       Role: !GetAtt DonationProcessorRole.Arn
       Runtime: python3.8
+
+  # TODO add trigger for Lambda, Lambda permission
