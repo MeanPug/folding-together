@@ -49,7 +49,7 @@ $(aws ecr get-login --no-include-email --region us-east-1)
 
 # build and upload
 VERSION=<VERSION>
-gulp
+npm run build
 docker build -t frontend-payments-registration:$VERSION .
 docker tag frontend-payments-registration:$VERSION 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-registration:$VERSION
 docker push 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-registration:$VERSION
