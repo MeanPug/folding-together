@@ -86,7 +86,7 @@ def update_balance(amount):
 def lambda_handler(event, context):
     sqs_client = boto3.client('sqs')
     response = sqs_client.receive_message(
-        QueueUrl=os.environ['QueueURL'],
+        QueueUrl=os.environ['QueueUrl'],
         # AttributeNames=[
         #     'All'|'Policy'|'VisibilityTimeout'|'MaximumMessageSize'|'MessageRetentionPeriod'|'ApproximateNumberOfMessages'|'ApproximateNumberOfMessagesNotVisible'|'CreatedTimestamp'|'LastModifiedTimestamp'|'QueueArn'|'ApproximateNumberOfMessagesDelayed'|'DelaySeconds'|'ReceiveMessageWaitTimeSeconds'|'RedrivePolicy'|'FifoQueue'|'ContentBasedDeduplication'|'KmsMasterKeyId'|'KmsDataKeyReusePeriodSeconds',
         # ],
