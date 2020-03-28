@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block meta %}
     {% endblock %}
 
@@ -21,36 +22,36 @@
 </head>
 <body>
     <section class="bg-gray-100">
-        <nav class="flex justify-between items-center relative pr-24">
-            <div class="bg-blue-light rounded-full w-64 h-64 py-8 text-white uppercase relative -ml-16 -mt-20" id="folding-circle">
+        <nav class="flex justify-between items-center relative pr-6 md:pr-24">
+            <div class="bg-blue-light rounded-full w-48 sm:w-32 md:w-64 h-48 sm:h-32 md:h-64 py-8 text-white uppercase relative -ml-4 sm:-ml-8 md:-ml-16 -mt-8 sm:-mt-12 md:-mt-20" id="folding-circle">
                 <a href="{% url 'home' %}">
-                    <h1 class="text-2xl uppercase pt-24 pl-20">Folding @ <br />Together</h1>
+                    <h1 class="text-2xl uppercase pt-8 sm:pt-12 md:pt-24 pl-8 md:pl-20 pr-4 md:pr-0">Folding @ <br />Together</h1>
                 </a>
             </div>
 
-            <div>
-                <a href="{% url 'about' %}" class="uppercase mr-4 font-bold">What is Folding@Together</a>
+            <div class="flex flex-col md:flex-row items-end md:items-center text-right">
+                <a href="{% url 'about' %}" class="uppercase mr-4 font-bold pb-4 md:pb-0">What is Folding@Together</a>
                 <a href="{% url 'donate' %}" class="ml-4 btn-primary bg-orange hover:bg-blue text-white">Donate</a>
             </div>
         </nav>
 
-        <div class="flex items-center">
-            <div class="pt-6 pb-12 px-12 w-3/4">
+        <div class="flex flex-col md:flex-row items-center pt-6 md:pt-0">
+            <div class="pt-6 pb-12 px-4 md:px-12 w-full md:w-3/4 order-1 md:order-0">
                 {% block content %}
                 {% endblock %}
             </div>
 
-            <div class="w-1/4">
+            <div class="w-full md:w-1/4 order-0 md:order-1">
                 <img src="{% static "images/virus.svg" %}" />
             </div>
         </div>
     </section>
 
-    <section class="pt-4 px-12">
-        <h2 class="uppercase tracking-wide font-bold pb-8">How Can I Help</h2>
+    <section class="pt-4 px-4 md:px-12">
+        <h2 class="uppercase tracking-wide font-bold pb-4 md:pb-8">How Can I Help</h2>
 
-        <ul class="flex items-start">
-            <li class="shadow-2xl rounded border border-gray-200 px-8 py-4 w-1/3">
+        <ul class="flex flex-col md:flex-row items-start">
+            <li class="shadow-2xl rounded border border-gray-200 px-8 py-4 w-full md:w-1/2 xl:w-1/3">
                 <h3 class="uppercase text-blue-dark pb-6 font-bold text-lg">Download Folding@Home</h3>
 
                 <p class="text-gray-600 leading-relaxed">
@@ -66,7 +67,7 @@
                 </div>
             </li>
 
-            <li class="shadow-2xl rounded border border-gray-200 px-8 py-4 w-1/3 ml-12">
+            <li class="shadow-2xl rounded border border-gray-200 px-8 py-4 w-full md:w-1/2 xl:w-1/3 ml-0 md:ml-12 mt-8 md:mt-0">
                 <h3 class="uppercase text-blue-dark pb-6 font-bold text-lg">Donate</h3>
 
                 <p class="text-gray-600 leading-relaxed">
