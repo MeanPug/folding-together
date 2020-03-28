@@ -27,17 +27,23 @@ In order to overcome the hurdles of (1) and (2), we democratize folding by allow
 4. Social recognition and feedback
 
 ## Development
+
 ### Running Frontend (Registration and Payments)
-_Prequisites_ - in order to run the frontend app, you'll need Docker installed and the gulp-cli available on the system path.
-```
+
+_Prerequisites_ - in order to run the frontend app, you'll need Docker installed and the gulp-cli available on the system path.
+
+```bash
 docker-compose up -d
 gulp dev
 ```
 
 ## Running Deployments
+
 ### Deploying Frontend (Registration and Payments)
+
 _Prerequisites_ - In order to deploy, make sure you have [helm](https://helm.sh/) installed and are set up in the AWS Auth configmap to authenticate with the cluster.
-```
+
+```bash
 # register docker client
 $(aws ecr get-login --no-include-email --region us-east-1)
 
