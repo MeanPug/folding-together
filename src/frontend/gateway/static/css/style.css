@@ -21,7 +21,7 @@ h3 {
     @apply text-xl;
 }
 
-p, span {
+p, span, li {
     @apply font-body;
 }
 
