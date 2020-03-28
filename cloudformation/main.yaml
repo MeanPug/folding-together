@@ -6,3 +6,9 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://folding-together-artifacts.s3.amazonaws.com/cloudformation/banker.yaml
+
+  # ComputeStack:
+  #   Type: AWS::CloudFormation::Stack
+  #   Properties:
+  #     # https://github.com/jkataja/cfn-foldingathome/blob/master/foldingathome.yml
+  #     TemplateURL: https://folding-together-artifacts.s3.amazonaws.com/cloudformation/compute.yaml
