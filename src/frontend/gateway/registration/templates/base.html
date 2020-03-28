@@ -22,8 +22,10 @@
 <body>
     <section class="bg-gray-100">
         <nav class="flex justify-between items-center relative pr-24">
-            <div class="bg-blue-light rounded-full w-64 h-64 py-8 text-white uppercase relative -ml-16 -mt-20">
-                <h1 class="text-2xl uppercase pt-24 pl-20">Folding @ <br />Together</h1>
+            <div class="bg-blue-light rounded-full w-64 h-64 py-8 text-white uppercase relative -ml-16 -mt-20" id="folding-circle">
+                <a href="{% url 'home' %}">
+                    <h1 class="text-2xl uppercase pt-24 pl-20">Folding @ <br />Together</h1>
+                </a>
             </div>
 
             <div>
@@ -32,18 +34,15 @@
             </div>
         </nav>
 
-        <div class="pt-6 pb-12 px-12 w-3/4">
-            <h2 class="uppercase text-3xl tracking-wide font-bold pb-8">Help us fight against Covid-19 with Folding@Home</h2>
+        <div class="flex items-center">
+            <div class="pt-6 pb-12 px-12 w-3/4">
+                {% block content %}
+                {% endblock %}
+            </div>
 
-            <p class="text-gray-600 leading-relaxed text-lg">
-                Though it isn't new, the <a href="https://foldingathome.org/">Folding@Home project</a> allows individuals to donate their computing
-                resources to researchers searching for cures to diseases like Covid-19.
-            </p>
-
-            <p class="text-gray-600 mt-4 leading-relaxed text-lg">
-                These resources allow researchers to run computationally expensive simulations that illustrate how atoms
-                in a protein move relative to each other, allowing for therapeutic discoveries. Let's help find a cure, together.
-            </p>
+            <div class="w-1/4">
+                <img src="{% static "images/virus.svg" %}" />
+            </div>
         </div>
     </section>
 

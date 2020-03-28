@@ -25,8 +25,22 @@ p, span {
     @apply font-body;
 }
 
+/**-- Links --**/
+.content-link {
+    @apply text-blue underline;
+}
+
 /**-- Buttons --**/
 .btn-primary {
     transition: all .5s;
     @apply px-8 py-6 uppercase;
+}
+
+/**-- Custom --**/
+#folding-circle {
+    transition: transform .3s;
+}
+
+#folding-circle:hover {
+    transform: scale(1.1);
 }
