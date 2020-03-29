@@ -5,7 +5,7 @@ Resources:
   BankerStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://folding-together-artifacts.s3.amazonaws.com/cloudformation/banker.yaml
+      TemplateURL: https://folding-together-artifacts.s3.amazonaws.com/cloudformation/donation_processor.yaml
 
   # ComputeStack:
   #   Type: AWS::CloudFormation::Stack

@@ -1,7 +1,7 @@
 
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: Bank balance tracking resources
+Description: Donation processing resources
 Resources:
   Queue:
     Type: AWS::SQS::Queue
