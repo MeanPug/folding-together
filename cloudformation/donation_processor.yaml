@@ -39,9 +39,7 @@ Resources:
             Version: 2012-10-17
             Statement:
               - Effect: Allow
-                Action:
-                  - ddb:GetItem
-                  - ddb:PutItem
+                Action: dynamodb:UpdateItem
                 Resource: !Ref TableArn
         - PolicyName: QueueProcessing
           PolicyDocument:
