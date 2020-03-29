@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Folding@Together | Donate Computing Power</title>
+    <meta name="description" content="An alternative way for individuals to contribute compute resources for Covid-19 researchers to find a cure faster." />
+{% endblock %}
+
+{% block content %}
+    <div class="flex">
+        <div class="w-2/3">
+            <div class="bg-white px-8 py-4 mr-4 border border-gray-200 shadow-xl">
+                <div id="donation-form"></div>
+            </div>
+        </div>
+
+        <div class="w-1/3">
+            <div class="bg-white px-4 py-4 border border-gray-200 shadow-xl">
+                <h4 class="text-lg font-bold uppercase pb-4">Where Your Donation Goes</h4>
+
+                <p class="leading-relaxed text-gray-800">
+                    100% of your donation goes towards running compute resources to solve protein folding simulations
+                </p>
+            </div>
+
+            <div class="bg-white px-4 py-4 mt-4 border border-gray-200 shadow-xl">
+                <h4 class="text-lg font-bold uppercase pb-4">Recent Donations</h4>
+
+                <div id="recent-donations"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

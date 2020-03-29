@@ -59,4 +59,15 @@ Common env
     secretKeyRef:
       name: frontend-registration-postgres-creds
       key: postgresql-password
+- name: STATIC_ROOT
+  value: /var/www/html/static
+- name: AWS_DEFAULT_REGION
+  value: us-east-1
+- name: AWS_SQS_DONATION_QUEUE
+  value: {{ .Values.application.env.aws_sqs_donation_queue }}
+- name: STRIPE_SECRET_KEY
+  valueFrom:
+    secretKeyRef:
+      name: stripe-keys
+      key: secret_key
 {{- end -}}

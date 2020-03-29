@@ -1,0 +1,78 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+/**-- Base --**/
+h1,h2,h3,h4,h5 {
+    @apply font-header font-bold;
+}
+
+h1 {
+    @apply text-3xl;
+}
+
+h2 {
+    @apply text-2xl;
+}
+
+h3 {
+    @apply text-xl;
+}
+
+p, span, li, label {
+    @apply font-body;
+}
+
+/**-- Links --**/
+.content-link {
+    @apply text-blue underline;
+}
+
+/**-- Buttons --**/
+.btn-primary {
+    transition: all .5s;
+    @apply px-8 py-6 uppercase;
+}
+
+/**-- Forms --**/
+.StripeElement {
+    box-sizing: border-box;
+    height: 40px;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: white;
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+    border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+}
+
+.form-field {
+    transition: box-shadow 150ms ease;
+    box-sizing: border-box;
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    @apply border rounded bg-white shadow-xl px-4 py-4 h-12 w-full;
+}
+
+/**-- Custom --**/
+#folding-circle {
+    transition: transform .3s;
+}
+
+#folding-circle:hover {
+    transform: scale(1.1);
+}

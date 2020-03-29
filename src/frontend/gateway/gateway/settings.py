@@ -61,7 +61,9 @@ ROOT_URLCONF = 'gateway.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'gateway/templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,3 +131,46 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.getenv('STATIC_ROOT', '/var/www/html/')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+
+# Logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'payments': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+    },
+}
+
+
+# AWS
+
+AWS = {
+    'SQS': {
+        'DONATION_QUEUE': os.getenv('AWS_SQS_DONATION_QUEUE')
+    }
+}
+
+
+# Stripe
+
+STRIPE = {
+    'SECRET_KEY': os.getenv('STRIPE_SECRET_KEY')
+}
