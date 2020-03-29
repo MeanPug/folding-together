@@ -1,8 +1,40 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block meta %}
     <title>Folding@Together | Thanks for Your Donation!</title>
     <meta name="description" content="An alternative way for individuals to contribute compute resources for Covid-19 researchers to find a cure faster." />
+{% endblock %}
+
+{% block start_body %}
+<!-- Load Facebook SDK for JavaScript -->
+<div id="fb-root"></div>
+<script>(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<!-- Load Twitter -->
+<script>window.twttr = (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    t._e = [];
+    t.ready = function (f) {
+        t._e.push(f);
+    };
+
+    return t;
+}(document, "script", "twitter-wjs"));</script>
 {% endblock %}
 
 {% block content %}
@@ -13,5 +45,21 @@
     <h3 class="pt-3 pb-4">Whats Next?</h3>
 
     <p>Now it's time to spread the word! The more people that donate, the more computing power we can offer to researchers
-    searching for new drug therapies.</p>
+    searching for cures.</p>
+
+    <div class="pt-8 flex justify-start items-end">
+        <div class="fb-share-button mr-4" data-href="https://www.foldtogether.org/about/" data-layout="button_count"></div>
+        <a class="twitter-share-button"
+           href="https://twitter.com/intent/tweet"
+           data-size="large"
+           data-text="I helped power research to find a cure, join me and help beat Covid-19"
+           data-url="https://www.foldtogether.org/about/"
+           data-hashtags="foldtogether,foldingathome,covid-19,coronavirus"
+           data-related="foldingathome">
+            Tweet
+        </a>
+        <a href="mailto:everyone@your-contacts.com?subject=Help Researchers Find The Cure to Covid-19&body=Visit https://www.foldtogether.org/about/ and donate to help researchers find a cure" class="ml-4">
+            <img src="{% static 'images/paper-plane.svg' %}" alt="email icon" class="w-8 h-8" />
+        </a>
+    </div>
 {% endblock %}

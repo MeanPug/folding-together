@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:url" content="https://www.foldtogether.org{{ request.path }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Folding@Together | Help Covid-19 Researchers Find A Cure" />
+    <meta property="og:description" content="An alternative way for individuals to contribute compute resources for Covid-19 researchers to find a cure." />
+    <meta property="og:image" content="https://www.foldtogether.org/static/images/virus.svg" />
     {% block meta %}
     {% endblock %}
 
@@ -21,6 +26,7 @@
     <link rel="stylesheet" href="{% static "build/main.css" %}" />
 </head>
 <body>
+    {% block start_body %}{% endblock %}
     <section class="bg-gray-100">
         <nav class="flex justify-between items-center relative pr-6 md:pr-24">
             <div class="bg-blue-light rounded-full w-48 sm:w-32 md:w-64 h-48 sm:h-32 md:h-64 py-8 text-white uppercase relative -ml-4 sm:-ml-8 md:-ml-16 -mt-8 sm:-mt-12 md:-mt-20" id="folding-circle">
