@@ -4,4 +4,4 @@ pgdata/
 __pycache__
 helm/frontend-registration-payments/charts/*
 gateway/static/build/
-
+.env

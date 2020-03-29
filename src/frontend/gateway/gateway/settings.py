@@ -151,11 +151,6 @@ LOGGING = {
         'level': 'WARNING',
     },
     'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
-            'propagate': False,
-        },
         'payments': {
             'handlers': ['console'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),

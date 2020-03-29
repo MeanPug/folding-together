@@ -9,6 +9,10 @@ class Donor(models.Model):
 
     last_donation_time = models.DateTimeField(null=True, blank=True, default=None)
 
+    @property
+    def name(self):
+        return f'{self.first_name} {self.last_name}'.strip()
+
     @classmethod
     def get_or_create_anonymous(cls):
         """ gets or creates the anonymous donor that can be used for donations coming in anonymously

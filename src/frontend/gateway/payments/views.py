@@ -33,7 +33,7 @@ class DonateView(TemplateView):
                 amount_cents=form.cleaned_data['donation_amount_cents']
             )
 
-            ## TODO: charge the donation, send the SQS message
+            charge_success = donation.charge()
 
             return JsonResponse({'status': 'success', 'redirect': reverse("donation_received")})
         else:

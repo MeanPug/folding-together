@@ -24,6 +24,8 @@ services:
       DEBUG: 1
       DJANGO_LOG_LEVEL: DEBUG
       AWS_SQS_DONATION_QUEUE: https://queue.amazonaws.com/451298871710/folding-together-compute-BankerStack-CXLLGMSUKZ4G-Queue-3ZY5MGTZ4BTK
+    env_file:
+      - .env
     depends_on:
       - db
 volumes:
