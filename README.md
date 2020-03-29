@@ -57,3 +57,13 @@ docker push 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-
 # upgrade the release
 helm upgrade --install frontend-registration-payments helm/frontend-registration-payments --set image.tag=$VERSION
 ```
+
+### Deploying Folding@Home Single-Instance CFN Stack
+
+```bash
+aws cloudformation create-stack \
+	--template-url https://s3.amazonaws.com/folding-together-artifacts/cloudformation/foldingathome.yaml \
+	--stack-name folding-together-test \
+	--parameters ParameterKey=KeyName,ParameterValue=folding_nodes ParameterKey=Subnets,ParameterValue='subnet-2ec0fc10 subnet-75ba187b subnet-8ba048ed subnet-b868d0f5 subnet-c007f0e1 subnet-ec3ecbb3' ParameterKey=VpcId,ParameterValue=vpc-394e4a43 \
+	--capabilities CAPABILITY_IAM
+```
