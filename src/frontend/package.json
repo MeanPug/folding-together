@@ -4,7 +4,7 @@
   "description": "Frontend to the folding@together project",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --config webpack.config.js --mode development --watch",
+    "dev": "STRIPE_PUBLIC_KEY=pk_test_V5JYKHDsRowNf2IiF9K2L5WE00Wcn7a6oS webpack --config webpack.config.js --mode development --watch",
     "build": "webpack --config webpack.config.js --mode production"
   },
   "author": "",
@@ -26,6 +26,7 @@
   "dependencies": {
     "@stripe/react-stripe-js": "^1.1.0",
     "@stripe/stripe-js": "^1.3.0",
+    "babel-polyfill": "^6.26.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }

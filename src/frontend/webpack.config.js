@@ -1,11 +1,15 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 let path = require('path');
 
 module.exports = {
-    plugins: [new MiniCssExtractPlugin()],
-    entry: {
-        'site': path.resolve(__dirname, 'gateway/static/js/site.js'),
-    },
+    plugins: [
+        new MiniCssExtractPlugin(),
+        new webpack.EnvironmentPlugin({
+            STRIPE_PUBLIC_KEY: null,
+        })
+    ],
+    entry: ['babel-polyfill', path.resolve(__dirname, 'gateway/static/js/site.js')],
     output: {
         path: path.resolve(__dirname, 'gateway/static/build'),
         filename: '[name].js'

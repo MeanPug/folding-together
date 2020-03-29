@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import React from 'react';
+import { chargeToken } from '../lib/payments';
 import { loadStripe } from '@stripe/stripe-js';
 import {
     CardElement,
@@ -28,8 +30,22 @@ const CARD_ELEMENT_OPTIONS = {
 
 const CheckoutForm = () => {
     const [error, setError] = useState(null);
+    const [donationAmount, setDonationAmount] = useState(1);
     const stripe = useStripe();
     const elements = useElements();
+
+    const validateData = () => {
+        // the donation amount must be >= 1
+        if (donationAmount < 1) {
+            return {
+                error: 'please set a donation amount greater than or equal to $1'
+            }
+        }
+
+        return {
+            error: null
+        }
+    };
 
     // Handle real-time validation errors from the card Element.
     const handleChange = (event) => {
@@ -45,36 +61,67 @@ const CheckoutForm = () => {
         event.preventDefault();
         const card = elements.getElement(CardElement);
         const result = await stripe.createToken(card);
+        const validation = validateData();
+
         if (result.error) {
-            // Inform the user if there was an error.
             setError(result.error.message);
+        } else if (validation.error) {
+            setError(validation.error)
         } else {
             setError(null);
-            // Send the token to your server.
-            stripeTokenHandler(result.token);
+            chargeToken(result.token);
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
+            <h2 className="pb-4 text-lg uppercase">Donation Information</h2>
+
+            <div className="flex">
+                <div className="w-1/2 pr-4">
+                    <input type="text" name="first_name" placeholder="First Name" className="form-field" />
+                </div>
+
+                <div className="w-1/2 pl-4">
+                    <input type="text" name="last_name" placeholder="Last Name" className="form-field" />
+                </div>
+            </div>
+
+            <div className="flex items-end pt-4">
+                <div className="w-1/2 pr-4">
+                    <input type="email" name="email" placeholder="Email" title="only required if you want a report of how your donation was spent" className="form-field" />
+                </div>
+
+                <div className="w-1/2 pl-4">
+                    <label htmlFor="donation" className="text-gray-700 italic">Donation Amount</label>
+
+                    <div className="flex items-center">
+                        <span>$</span>
+                        <input type="number" name="donation" className="form-field" placeholder="0" onChange={evt => setDonationAmount(evt.currentTarget.value)} value={donationAmount} />
+                    </div>
+                </div>
+            </div>
+
+            <h2 className="pt-12 pb-4 text-lg uppercase">Payment Information</h2>
+
             <div className="form-row">
-                <label for="card-element">
-                    Credit or debit card
-                </label>
                 <CardElement
                     id="card-element"
                     options={CARD_ELEMENT_OPTIONS}
                     onChange={handleChange}
                 />
-                <div className="card-errors" role="alert">{error}</div>
+                <div className="card-errors pt-8 text-center font-bold text-sm text-orange" role="alert">{error}</div>
             </div>
-            <button type="submit">Submit Payment</button>
+
+            <div className="text-center pt-8">
+                <button type="submit" className="btn-primary bg-orange text-white">Send ${donationAmount} Donation</button>
+            </div>
         </form>
     );
 };
 
 export default ({ stripeKey }) => {
-    const stripePromise = loadStripe('pk_test_V5JYKHDsRowNf2IiF9K2L5WE00Wcn7a6oS');
+    const stripePromise = loadStripe(stripeKey);
 
     return (
         <Elements stripe={stripePromise}>
@@ -82,4 +129,3 @@ export default ({ stripeKey }) => {
         </Elements>
     );
 };
-//
