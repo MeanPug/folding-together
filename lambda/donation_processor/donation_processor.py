@@ -5,16 +5,12 @@ import json
 import os
 
 
-metric_namespace = 'FT-Bank'
-metric_name = 'Balance'
-metric_dimension_name = 'Cause'
-metric_dimension_value = 'Any'
-update_frequency_seconds = 60*60*4
-
-
 # Function for executing athena queries
-def update_balance(amount):
+def update_balance(amount, donor_id):
     cw_client = boto3.client('cloudwatch')
+    metric_namespace = 'FT-Bank'
+    metric_name = 'Balance'
+    metric_dimension_name = 'Donor'
     # TODO protect against race conditions with reads and writes
 
     response = cw_client.get_metric_data(
@@ -28,7 +24,7 @@ def update_balance(amount):
                         'Dimensions': [
                             {
                                 'Name': metric_dimension_name,
-                                'Value': metric_dimension_value
+                                'Value': donor_id
                             },
                         ]
                     },
@@ -42,8 +38,8 @@ def update_balance(amount):
                 # 'Period': 123
             },
         ],
-        StartTime=datetime.datetime.now() - datetime.timedelta(
-            seconds=update_frequency_seconds),
+        # Assume not processing more than one donation per donor per second
+        StartTime=datetime.datetime.now() - datetime.timedelta(seconds=1),
         EndTime=datetime.datetime.now(),
         # NextToken='string',
         # ScanBy='TimestampDescending'|'TimestampAscending',
@@ -65,7 +61,7 @@ def update_balance(amount):
                 'Dimensions': [
                     {
                         'Name': metric_dimension_name,
-                        'Value': metric_dimension_value
+                        'Value': donor_id
                     },
                 ],
                 'Timestamp': datetime.datetime.now(),
@@ -111,7 +107,9 @@ def lambda_handler(event, context):
         # TODO handle processing many messages
         message = json.loads(response['Messages'][0]['Body'])
         # print(message['donation']['amount'])
-        new_balance = update_balance(message['donation']['amount'])
+        new_balance = update_balance(
+            message['donation']['amount'],
+            message['donor']['id'])
         # TODO delete messages from the queue when complete
         return 'New value is ' + str(new_balance) + ' cents.'
     else:
