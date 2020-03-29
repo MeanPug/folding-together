@@ -17,7 +17,7 @@ In order to overcome the hurdles of (1) and (2), we democratize folding by allow
 
 ## Technical
 
-![architecture diagram](img/arch-diagram.png)
+![architecture diagram](img/arch-diagram-v2.png)
 
 ## High Level Tasks
 
