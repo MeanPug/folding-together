@@ -30,7 +30,11 @@ const CARD_ELEMENT_OPTIONS = {
 
 const CheckoutForm = () => {
     const [error, setError] = useState(null);
+    const [firstName, setFirstName] = useState(null);
+    const [lastName, setLastName] = useState(null);
+    const [email, setEmail] = useState(null);
     const [donationAmount, setDonationAmount] = useState(1);
+
     const stripe = useStripe();
     const elements = useElements();
 
@@ -69,7 +73,18 @@ const CheckoutForm = () => {
             setError(validation.error)
         } else {
             setError(null);
-            chargeToken(result.token);
+            const serverResponse = await chargeToken(result.token, {
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                donation_amount: donationAmount
+            });
+
+            if (serverResponse.status === 'success') {
+                window.location = serverResponse.redirect;
+            } else {
+                setError(serverResponse.message);
+            }
         }
     };
 
@@ -79,17 +94,39 @@ const CheckoutForm = () => {
 
             <div className="flex">
                 <div className="w-1/2 pr-4">
-                    <input type="text" name="first_name" placeholder="First Name" className="form-field" />
+                    <input
+                        type="text"
+                        name="first_name"
+                        placeholder="First Name"
+                        className="form-field"
+                        value={firstName}
+                        onChange={evt => setFirstName(evt.currentTarget.value)}
+                    />
                 </div>
 
                 <div className="w-1/2 pl-4">
-                    <input type="text" name="last_name" placeholder="Last Name" className="form-field" />
+                    <input
+                        type="text"
+                        name="last_name"
+                        placeholder="Last Name"
+                        className="form-field"
+                        value={lastName}
+                        onChange={evt => setLastName(evt.currentTarget.value)}
+                    />
                 </div>
             </div>
 
             <div className="flex items-end pt-4">
                 <div className="w-1/2 pr-4">
-                    <input type="email" name="email" placeholder="Email" title="only required if you want a report of how your donation was spent" className="form-field" />
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        title="only required if you want a report of how your donation was spent"
+                        className="form-field"
+                        value={email}
+                        onChange={evt => setEmail(evt.currentTarget.value)}
+                    />
                 </div>
 
                 <div className="w-1/2 pl-4">
@@ -97,7 +134,14 @@ const CheckoutForm = () => {
 
                     <div className="flex items-center">
                         <span>$</span>
-                        <input type="number" name="donation" className="form-field" placeholder="0" onChange={evt => setDonationAmount(evt.currentTarget.value)} value={donationAmount} />
+                        <input
+                            type="number"
+                            name="donation"
+                            className="form-field"
+                            placeholder="0"
+                            onChange={evt => setDonationAmount(evt.currentTarget.value)}
+                            value={donationAmount}
+                        />
                     </div>
                 </div>
             </div>

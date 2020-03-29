@@ -1,20 +1,9 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
 from registration import models
 
 
-class DonorInline(admin.StackedInline):
-    model = models.Donor
-    can_delete = False
-    verbose_name_plural = 'donors'
+class DonorAdmin(admin.ModelAdmin):
+    fields = ('first_name', 'last_name', 'email', 'last_donation_time')
 
 
-# Define a new User admin
-class UserAdmin(BaseUserAdmin):
-    inlines = (DonorInline,)
-
-
-# Re-register UserAdmin
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin.site.register(models.Donor, DonorAdmin)
