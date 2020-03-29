@@ -7,7 +7,11 @@ class DonationForm(forms.Form):
     email = forms.CharField(required=False)
     # donation amount (in US dollars)
     donation_amount = forms.IntegerField(required=True)
-    token = forms.CharField(required=True)
+
+    payment_method_id = forms.CharField(required=False)
+    payment_intent_id = forms.CharField(required=False)
+    # only set on the payment ceremonies requiring card authorization
+    donation_id = forms.CharField(required=False)
 
     def clean_donation_amount(self):
         amount = self.cleaned_data['donation_amount']

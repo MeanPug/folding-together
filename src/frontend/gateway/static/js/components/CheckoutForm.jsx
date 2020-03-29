@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import React from 'react';
-import { chargeToken } from '../lib/payments';
+import { chargePaymentMethod } from '../lib/payments';
 import { loadStripe } from '@stripe/stripe-js';
 import {
     CardElement,
@@ -34,6 +34,8 @@ const CheckoutForm = () => {
     const [lastName, setLastName] = useState(null);
     const [email, setEmail] = useState(null);
     const [donationAmount, setDonationAmount] = useState(1);
+    // may be set depending on the stripe flow taken
+    let donationId = null;
 
     const stripe = useStripe();
     const elements = useElements();
@@ -60,11 +62,51 @@ const CheckoutForm = () => {
         }
     };
 
+    async function handleStripeJsResult(result) {
+        if (result.status === 'error') {
+            setError(result.message);
+        } else {
+            // The card action has been handled
+            // The PaymentIntent can be confirmed again on the server
+            const serverResponse = await chargePaymentMethod({
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                donation_amount: donationAmount,
+                donation_id: donationId,
+                payment_intent_id: result.paymentIntent.id
+            });
+
+            handleServerResponse(serverResponse);
+        }
+    }
+
+    function handleServerResponse(response) {
+        if (response.status === 'error') {
+            setError(response.message);
+        } else if (response.status === 'requires_action') {
+            donationId = response.donation_id;
+            // Use Stripe.js to handle required card action
+            stripe
+                .handleCardAction(response.payment_intent_client_secret)
+                .then(handleStripeJsResult);
+        } else {
+            window.location = response.redirect;
+        }
+    }
+
     // Handle form submission.
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const card = elements.getElement(CardElement);
-        const result = await stripe.createToken(card);
+        const result = await stripe.createPaymentMethod({
+            type: 'card',
+            card: elements.getElement(CardElement),
+            billing_details: {
+                // Include any additional collected billing details.
+                name: `${firstName} ${lastName}`,
+                email
+            },
+        });
         const validation = validateData();
 
         if (result.error) {
@@ -73,18 +115,15 @@ const CheckoutForm = () => {
             setError(validation.error)
         } else {
             setError(null);
-            const serverResponse = await chargeToken(result.token, {
+            const serverResponse = await chargePaymentMethod({
                 first_name: firstName,
                 last_name: lastName,
                 email: email,
-                donation_amount: donationAmount
+                donation_amount: donationAmount,
+                payment_method_id: result.paymentMethod.id
             });
 
-            if (serverResponse.status === 'success') {
-                window.location = serverResponse.redirect;
-            } else {
-                setError(serverResponse.message);
-            }
+            handleServerResponse(serverResponse);
         }
     };
 

@@ -1,11 +1,14 @@
 from django.db import models
+from django.utils.timezone import now
 from payments import signals
+import stripe
+import json
 
 
 class Donation(models.Model):
     donor = models.ForeignKey('registration.Donor', related_name='donations', on_delete=models.CASCADE)
 
-    charge_token = models.CharField(max_length=255)
+    payment_method_id = models.CharField(max_length=255)
     amount_cents = models.IntegerField(default=0, help_text='the USD amount of the donation in cents')
 
     created_time = models.DateTimeField(auto_now_add=True)
@@ -19,11 +22,10 @@ class Donation(models.Model):
         """
         return '${:0,.0f}'.format(self.amount_cents / 100.0)
 
-    def charge(self):
-        """ charges the charge token associated with this donation for the amount given in self.amount_cents """
-        ## TODO process stripe charge
+    def finalize_charge(self):
+        """ runs any final work at the end of the stripe payment ceremony """
+        self.charged_time = now()
         signals.donation_charged.send(self.__class__, donation=self)
-
         return True
 
     def __str__(self):

@@ -1,7 +1,7 @@
 import { csrftoken } from './cookies';
 
-async function chargeToken(token, data) {
-    const body = JSON.stringify(Object.assign({}, {token: token.id}, data));
+async function chargePaymentMethod(data) {
+    const body = JSON.stringify(data);
 
     const response = await fetch('/donate/', {
         method: 'POST',
@@ -15,4 +15,4 @@ async function chargeToken(token, data) {
     return response.json();
 }
 
-export { chargeToken }
+export { chargePaymentMethod }
