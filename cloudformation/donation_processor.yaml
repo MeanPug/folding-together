@@ -2,6 +2,13 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Donation processing resources
+Parameters:
+  TableArn:
+    Description: ARN of the DynamoDB table for storing balances
+    Type: String
+  TableName:
+    Description: Name of the DynamoDB table for storing balances
+    Type: String
 Resources:
   Queue:
     Type: AWS::SQS::Queue
@@ -27,23 +34,15 @@ Resources:
               Service: !Sub lambda.${AWS::URLSuffix}
             Action: sts:AssumeRole
       Policies:
-        - PolicyName: GetBalance
+        - PolicyName: UpdateBalance
           PolicyDocument:
             Version: 2012-10-17
             Statement:
               - Effect: Allow
-                Action: cloudwatch:GetMetricData
-                Resource: '*'
-        - PolicyName: PutBalance
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action: cloudwatch:PutMetricData
-                Resource: '*'
-                Condition:
-                  StringEquals:
-                    cloudwatch:namespace: FT-Bank
+                Action:
+                  - ddb:GetItem
+                  - ddb:PutItem
+                Resource: !Ref TableArn
         - PolicyName: QueueProcessing
           PolicyDocument:
             Version: 2012-10-17
@@ -66,7 +65,7 @@ Resources:
         S3Key: lambda/donation_processor.zip
       Environment:
         Variables:
-          QueueUrl: !Ref Queue
+          TableName: !Ref TableName
       Handler: donation_processor.lambda_handler
       Role: !GetAtt DonationProcessorRole.Arn
       Runtime: python3.8

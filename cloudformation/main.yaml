@@ -17,6 +17,9 @@ Resources:
   ProcessorStack:
     Type: AWS::CloudFormation::Stack
     Properties:
+      Parameters:
+        TableArn: !GetAtt BankBalanceDB.Arn
+        TableName: !Ref BankBalanceDB
       TemplateURL: https://folding-together-artifacts.s3.amazonaws.com/cloudformation/donation_processor.yaml
 
   # ComputeStack:
