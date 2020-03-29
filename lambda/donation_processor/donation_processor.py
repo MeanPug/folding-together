@@ -88,29 +88,14 @@ def update_balance(amount, donor_id):
 
 
 def lambda_handler(event, context):
-    sqs_client = boto3.client('sqs')
-    response = sqs_client.receive_message(
-        QueueUrl=os.environ['QueueUrl'],
-        # AttributeNames=[
-        #     'All'|'Policy'|'VisibilityTimeout'|'MaximumMessageSize'|'MessageRetentionPeriod'|'ApproximateNumberOfMessages'|'ApproximateNumberOfMessagesNotVisible'|'CreatedTimestamp'|'LastModifiedTimestamp'|'QueueArn'|'ApproximateNumberOfMessagesDelayed'|'DelaySeconds'|'ReceiveMessageWaitTimeSeconds'|'RedrivePolicy'|'FifoQueue'|'ContentBasedDeduplication'|'KmsMasterKeyId'|'KmsDataKeyReusePeriodSeconds',
-        # ],
-        # MessageAttributeNames=[
-        #     'string',
-        # ],
-        MaxNumberOfMessages=1,  # TODO handle processing many messages
-        VisibilityTimeout=5,  # TODO adjust as appropriate
-        # WaitTimeSeconds=123,
-        # ReceiveRequestAttemptId='string'
-    )
-    if "Messages" in response:
-        # print('Found something!')
-        # TODO handle processing many messages
-        message = json.loads(response['Messages'][0]['Body'])
-        # print(message['donation']['amount'])
+    # print(event)
+    for record in event['Records']:
+        payload = json.loads(record['body'])
+        # print(payload['donation']['amount'])
+        donor_id_string = str(payload['donor']['id'])
         new_balance = update_balance(
-            message['donation']['amount'],
-            message['donor']['id'])
-        # TODO delete messages from the queue when complete
-        return 'New value is ' + str(new_balance) + ' cents.'
-    else:
-        return 'No messages'
+            payload['donation']['amount'],
+            donor_id_string)
+        print('New value for ' + donor_id_string +
+              ' is ' + str(new_balance) + ' cents.')
+    return 'Success'
