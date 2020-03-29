@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.http.response import JsonResponse
 from django.utils.timezone import now
 from payments.forms import DonationForm
 from payments.models import Donation
+from payments import utils
 from registration.models import Donor
 import json
 import logging
@@ -42,3 +43,18 @@ class DonateView(TemplateView):
 
 class DonationReceivedView(TemplateView):
     template_name = 'donation_received.html'
+
+
+class RecentDonationsView(View):
+    def get(self, request, *args, **kwargs):
+        count = int(request.GET.get('n', 10))
+
+        donations = Donation.objects.select_related('donor').order_by('-id')[:count]
+
+        return JsonResponse({
+            'data': [{
+                'name': d.donor.first_name,
+                'time_canonical': utils.pretty_date(d.created_time),
+                'amount': d.formatted_amount
+            } for d in donations]
+        })

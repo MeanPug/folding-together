@@ -16,9 +16,25 @@ import config from './config.js';
 
     const recentDonations = document.getElementById('recent-donations');
     if (recentDonations) {
-        ReactDOM.render((
-            <RecentDonations n={5} />
-        ), recentDonations);
+        async function getDonations() {
+            const response = await fetch(`/recent-donations/?n=5`, {
+                method: 'GET',
+                headers: {
+                    'Accepts': 'application/json',
+                }
+            });
+            const { data } = await response.json();
+
+            ReactDOM.render((
+                <RecentDonations donations={data} />
+            ), recentDonations);
+        }
+
+        getDonations();
+        // refresh donation list every 5s
+        setInterval(getDonations, 5000);
+
+
     }
 }());
 

@@ -19,6 +19,10 @@ nginx:
     tag: stable
     pullPolicy: IfNotPresent
 
+application:
+  env:
+    aws_sqs_donation_queue: https://queue.amazonaws.com/451298871710/folding-together-compute-BankerStack-CXLLGMSUKZ4G-Queue-3ZY5MGTZ4BTK
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""

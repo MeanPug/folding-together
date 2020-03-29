@@ -167,3 +167,10 @@ AWS = {
         'DONATION_QUEUE': os.getenv('AWS_SQS_DONATION_QUEUE')
     }
 }
+
+
+# Stripe
+
+STRIPE = {
+    'SECRET_KEY': os.getenv('STRIPE_SECRET_KEY')
+}
