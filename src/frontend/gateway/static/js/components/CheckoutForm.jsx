@@ -131,8 +131,8 @@ const CheckoutForm = () => {
         <form onSubmit={handleSubmit}>
             <h2 className="pb-4 text-lg uppercase">Donation Information</h2>
 
-            <div className="flex">
-                <div className="w-1/2 pr-4">
+            <div className="flex flex-col sm:flex-row">
+                <div className="w-full sm:w-1/2 pr-0 sm:pr-4">
                     <input
                         type="text"
                         name="first_name"
@@ -143,7 +143,7 @@ const CheckoutForm = () => {
                     />
                 </div>
 
-                <div className="w-1/2 pl-4">
+                <div className="w-full sm:w-1/2 pl-0 sm:pl-4 mt-2 sm:mt-0">
                     <input
                         type="text"
                         name="last_name"
@@ -155,8 +155,8 @@ const CheckoutForm = () => {
                 </div>
             </div>
 
-            <div className="flex items-end pt-4">
-                <div className="w-1/2 pr-4">
+            <div className="flex flex-col sm:flex-row items-end pt-4">
+                <div className="w-full sm:w-1/2 pr-0 sm:pr-4">
                     <input
                         type="email"
                         name="email"
@@ -168,7 +168,7 @@ const CheckoutForm = () => {
                     />
                 </div>
 
-                <div className="w-1/2 pl-4">
+                <div className="w-full sm:w-1/2 pl-0 sm:pl-4 mt-2 sm:mt-0">
                     <label htmlFor="donation" className="text-gray-700 italic">Donation Amount</label>
 
                     <div className="flex items-center">
