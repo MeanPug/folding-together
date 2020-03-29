@@ -21,5 +21,4 @@ def lambda_handler(event, context):
         },
         ConsistentRead=True
     )
-    print(response)
-    return 'Success'
+    return response

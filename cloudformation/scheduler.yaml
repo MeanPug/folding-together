@@ -43,3 +43,33 @@ Resources:
       Handler: lookup_funding.lambda_handler
       Role: !GetAtt LookupFundingRole.Arn
       Runtime: python3.8
+
+  StepFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: !Sub states.${AWS::Region}.${AWS::URLSuffix}
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+
+  CloudCheckrCollectionFunction:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      DefinitionString: !Sub |-
+        {
+          "Comment": "Folding Together compute scheduling",
+          "StartAt": "LookupFunding",
+          "States": {
+            "LookupFunding": {
+              "Type": "Task",
+              "Resource": "${LookingFunding.Arn}",
+              "End": true
+            }
+          }
+        }
+      RoleArn: !GetAtt StepFunctionRole.Arn

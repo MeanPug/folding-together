@@ -20,11 +20,6 @@ Resources:
 
   DonationProcessorRole:
     Type: AWS::IAM::Role
-    Metadata:
-      cfn_nag:
-        rules_to_suppress:
-          - id: W11
-            reason: CloudWatch actions do not support resource-level permissions.
     Properties:
       AssumeRolePolicyDocument:
         Version: 2012-10-17
