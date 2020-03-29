@@ -50,6 +50,9 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
+                  - sqs:ChangeMessageVisibility
+                  - sqs:DeleteMessage
+                  - sqs:GetQueueAttributes
                   - sqs:ReceiveMessage
                 Resource: !GetAtt Queue.Arn
       ManagedPolicyArns:
@@ -68,4 +71,19 @@ Resources:
       Role: !GetAtt DonationProcessorRole.Arn
       Runtime: python3.8
 
-  # TODO add trigger for Lambda, Lambda permission
+  DonationProcessorPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt DonationProcessor.Arn
+      Principal: !Sub sqs.${AWS::URLSuffix}
+      SourceAccount: !Ref AWS::AccountId
+      SourceArn: !GetAtt Queue.Arn
+
+  EventSourceMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      BatchSize: 10
+      Enabled: true
+      EventSourceArn: !GetAtt Queue.Arn
+      FunctionName: !GetAtt DonationProcessor.Arn
