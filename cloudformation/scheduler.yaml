@@ -57,7 +57,7 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
 
-  CloudCheckrCollectionFunction:
+  ComputeSchedulerStateMachine:
     Type: AWS::StepFunctions::StateMachine
     Properties:
       DefinitionString: !Sub |-
