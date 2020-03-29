@@ -44,6 +44,49 @@ Resources:
       Role: !GetAtt LookupFundingRole.Arn
       Runtime: python3.8
 
+  LookupInstanceCostRole:
+    Type: AWS::IAM::Role
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W11
+            reason: DescribeSpotInstanceRequests does not support resource-level permissions.
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: !Sub lambda.${AWS::URLSuffix}
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: GetInstancePrices
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: ec2:DescribeSpotInstanceRequests
+                Resource: '*'
+        - PolicyName: LookupResources
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: cloudformation:DescribeStackResource
+                Resource: '*'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  LookupInstanceCost:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: folding-together-artifacts
+        S3Key: lambda/lookup_instance_cost.zip
+      Handler: lookup_instance_cost.lambda_handler
+      Role: !GetAtt LookupInstanceCostRole.Arn
+      Runtime: python3.8
+
   StepFunctionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -68,6 +111,21 @@ Resources:
             "LookupFunding": {
               "Type": "Task",
               "Resource": "${LookingFunding.Arn}",
+              "Next": "FundedLoop"
+            },
+            "FundedLoop": {
+              "Type": "Map",
+              "ItemsPath": "$.Items",
+              "Iterator": {
+                "StartAt": "LookupInstanceCost",
+                "States": {
+                  "LookupInstanceCost": {
+                    "Type": "Task",
+                    "Resource": "${LookupInstanceCost.Arn}",
+                    "End": true
+                  }
+                }
+              },
               "End": true
             }
           }
