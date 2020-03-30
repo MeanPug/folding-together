@@ -47,8 +47,8 @@ _Prerequisites_ - In order to deploy, make sure you have [helm](https://helm.sh/
 # register docker client
 $(aws ecr get-login --no-include-email --region us-east-1)
 
-# build and upload
-VERSION=<VERSION>
+# update version, build, and upload
+VERSION=$(cat VERSION)
 npm run build
 docker build -t frontend-payments-registration:$VERSION .
 docker tag frontend-payments-registration:$VERSION 451298871710.dkr.ecr.us-east-1.amazonaws.com/prod/frontend-payments-registration:$VERSION
