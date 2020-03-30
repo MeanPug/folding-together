@@ -124,6 +124,19 @@ Resources:
                   "LookupInstanceCost": {
                     "Type": "Task",
                     "Resource": "${LookupInstanceCost.Arn}",
+                    "ResultPath": "$.costSinceLastUpdate",
+                    "Next": "Decrement from balance"
+                  },
+                  "Decrement from balance": {
+                    "Type": "Task",
+                    "Resource": "arn:aws:states:::dynamodb:updateItem",
+                    "Parameters": {
+                      "TableName": "${TableName}",
+                      "Key": {
+                        "Donor_id": {"S": "$.Donor_id.S"}
+                      },
+                      "UpdateExpression": "ADD Balance $.costSinceLastUpdate"
+                    },
                     "End": true
                   }
                 }
