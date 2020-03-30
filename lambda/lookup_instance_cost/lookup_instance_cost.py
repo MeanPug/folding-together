@@ -42,9 +42,9 @@ def lambda_handler(event, context):
             hourly_price_str = spot_data['ActualBlockHourlyPrice']
         except KeyError:
             hourly_price_str = spot_data['SpotPrice']
-            
+
         hourly_price_decimal = Decimal(hourly_price_str.strip(' "'))
         hourly_price_cents = hourly_price_decimal * 100
-        return str(-1 * hourly_price_cents/60 * scheduler_frequency_in_minutes)
+        return str(int(-1 * hourly_price_cents/60 * scheduler_frequency_in_minutes))
     else:
         return '0'
