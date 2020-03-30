@@ -6,15 +6,20 @@
 {% endblock %}
 
 {% block content %}
-    <h2 class="uppercase text-3xl tracking-wide font-bold pb-8">Help us fight against Covid-19 with Folding@Home</h2>
+    <h1 class="uppercase text-3xl lg:text-5xl tracking-wide font-bold pb-8">Help us find a cure to Covid-19</h1>
 
     <p class="text-gray-600 leading-relaxed text-lg">
-        Though it isn't new, the <a href="https://foldingathome.org/" class="content-link">Folding@Home project</a> allows individuals to donate their computing
-        resources to researchers searching for cures to diseases like Covid-19.
+        Researchers need your computing power to run simulations in search of cures to diseases like Covid-19.
+        The <a href="https://foldingathome.org/" class="content-link">Folding@Home project</a> was started to make contributing
+        unused computing power for this cause as simple as possible, however many are hesitant about running software
+        like this on their personal computers.
     </p>
 
+    <h2 class="pt-4">Making contribution of compute resources easy</h2>
     <p class="text-gray-600 mt-4 leading-relaxed text-lg">
-        These resources allow researchers to run computationally expensive simulations that illustrate how atoms
-        in a protein move relative to each other, allowing for therapeutic discoveries. Let's help find a cure, together.
+        Folding@Together makes it easy for users to contribute computing power to researchers by leveraging the cloud
+        to run powerful servers on which researchers can launch computationally expensive simulations.
+        <a href="{% url 'about' %}" class="content-link">Learn more</a> about how we make contributing resources simple.
+        Let's help find a cure, together.
     </p>
 {% endblock %}
