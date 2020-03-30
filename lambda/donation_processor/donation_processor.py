@@ -17,11 +17,12 @@ def update_balance(amount, donor_id, donor_name):
         ReturnValues='ALL_NEW',
         ReturnConsumedCapacity='NONE',
         ReturnItemCollectionMetrics='NONE',
-        UpdateExpression='ADD Balance :val, SET Donor_Name=:name, SET StackId=empty',
+        UpdateExpression='ADD Balance :val SET Donor_Name=:name, StackId=:empty',
         # ConditionExpression='string',
         ExpressionAttributeValues={
             ':val': {'N': str(amount)},
             ':name': {'S': str(donor_name)},
+            ':empty': {'S': str('empty')},
         }
     )
 

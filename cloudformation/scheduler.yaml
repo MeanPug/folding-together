@@ -152,18 +152,17 @@ Resources:
                   },
                   "Choose stack action": {
                     "Type": "Choice",
-                    "InputPath": "$.Attributes",
                     "Choices": [
                       {
                         "And": [
                           {
                             "Not": {
-                              "Variable": "$.StackId.S",
+                              "Variable": "$.Attributes.StackId.S",
                               "StringEquals": "empty"
                             }
                           },
                           {
-                            "Variable": "$.Balance.N",
+                            "Variable": "$.Attributes.Balance.N",
                             "NumericGreaterThan": 0
                           }
                         ],
@@ -173,12 +172,12 @@ Resources:
                         "And": [
                           {
                             "Not": {
-                              "Variable": "$.StackId.S",
+                              "Variable": "$.Attributes.StackId.S",
                               "StringEquals": "empty"
                             }
                           },
                           {
-                            "Variable": "$.Balance.N",
+                            "Variable": "$.Attributes.Balance.N",
                             "NumericLessThanEquals": 1
                           }
                         ],
@@ -187,18 +186,18 @@ Resources:
                       {
                         "And": [
                           {
-                            "Variable": "$.StackId.S",
+                            "Variable": "$.Attributes.StackId.S",
                             "StringEquals": "empty"
                           },
                           {
-                            "Variable": "$.Balance.N",
+                            "Variable": "$.Attributes.Balance.N",
                             "NumericGreaterThan": 0
                           }
                         ],
                         "Next": "Start CloudFormation Stack"
                       },
                       {
-                        "Variable": "$.Balance.N",
+                        "Variable": "$.Attributes.Balance.N",
                         "NumericLessThanEquals": 0,
                         "Next": "Success Terminal"
                       }
@@ -210,8 +209,8 @@ Resources:
                     "Resource": "arn:aws:lambda:us-east-1:451298871710:function:folding-together-launch-fah-prod-run",
                     "ResultPath": "$.stackId",
                     "Parameters": {
-                      "donor_id.$": "$.Donor_id.S",
-                      "donor_name": "Anon"
+                      "donor_id.$": "$.Donor_Id.S",
+                      "donor_name.$": "$.Donor_Name.S"
                     },
                     "Next": "Write new stack id"
                   },
