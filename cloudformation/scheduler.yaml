@@ -148,6 +148,15 @@ Resources:
                       "ExpressionAttributeValues": {":cost": {"N.$": "$.costSinceLastUpdate"}},
                       "ReturnValues": "ALL_NEW"
                     },
+                    "Next": "Convert dynamo strings to numbers"
+                  },
+                  "Convert dynamo strings to numbers": {
+                    "Type": "Task",
+                    "Resource": "arn:aws:lambda:us-east-1:451298871710:function:folding-together-cast-numbers-prod-run",
+                    "ResultPath": "$.ConvertedNumbers",
+                    "Parameters": {
+                      "ConvertIn": {"balance.$": "$.Attributes.Balance.N"}
+                    },
                     "Next": "Choose stack action"
                   },
                   "Choose stack action": {
@@ -162,7 +171,7 @@ Resources:
                             }
                           },
                           {
-                            "Variable": "$.Attributes.Balance.N",
+                            "Variable": "$.ConvertedNumbers.balance",
                             "NumericGreaterThan": 0
                           }
                         ],
@@ -177,7 +186,7 @@ Resources:
                             }
                           },
                           {
-                            "Variable": "$.Attributes.Balance.N",
+                            "Variable": "$.ConvertedNumbers.balance",
                             "NumericLessThanEquals": 1
                           }
                         ],
@@ -190,14 +199,14 @@ Resources:
                             "StringEquals": "empty"
                           },
                           {
-                            "Variable": "$.Attributes.Balance.N",
+                            "Variable": "$.ConvertedNumbers.balance",
                             "NumericGreaterThan": 0
                           }
                         ],
                         "Next": "Start CloudFormation Stack"
                       },
                       {
-                        "Variable": "$.Attributes.Balance.N",
+                        "Variable": "$.ConvertedNumbers.balance",
                         "NumericLessThanEquals": 0,
                         "Next": "Success Terminal"
                       }
