@@ -135,7 +135,72 @@ Resources:
                       "Key": {
                         "Donor_id": {"S": "$.Donor_id.S"}
                       },
-                      "UpdateExpression": "ADD Balance $.costSinceLastUpdate"
+                      "UpdateExpression": "ADD Balance $.costSinceLastUpdate",
+                      "ReturnValues": "UPDATED_NEW"
+                    },
+                    "Next": "Choose stack action"
+                  },
+                  "Choose stack action": {
+                    "Type": "Choice",
+                    "Choices": [
+                      {
+                          "And": [
+                            {
+                              "Variable": "$.StackId",
+                              "StringGreaterThan": "arn"
+                            },
+                            {
+                              "Variable": "$.Balance",
+                              "NumericGreaterThan": 0
+                            }
+                          ],
+                          "End": true
+                      },
+                      {
+                        "And": [
+                            {
+                              "Variable": "$.StackId",
+                              "StringGreaterThan": "arn"
+                            },
+                            {
+                              "Variable": "$.Balance",
+                              "NumericLessThanEquals": 0
+                            }
+                          ],
+                          "Next": "Stop CloudFormation Stack"
+                      },
+                      {
+                        "Variable": "$.Balance",
+                        "NumericGreaterThan": 0,
+                        "Next": "Start CloudFormation Stack"
+                      },
+                      {
+                        "Variable": "$.Balance",
+                        "NumericLessThanEquals": 0,
+                        "End" true
+                      }
+                    ],
+                    "Default": "Stop CloudFormation Stack"
+                  },
+                  "Start CloudFormation Stack": {
+                    "Type": "Task",
+                    "Resource": "arn:aws:lambda:us-east-1:451298871710:function:folding-together-launch-fah-prod-run",
+                    "Next": "Write new stack id"
+                  },
+                  "Stop CloudFormation Stack": {
+                    "Type": "Task",
+                    "Resource": "arn:lambda:us-east-1:451298871710:function:folding-together-terminate-fah-prod-run",
+                    "End": true
+                  },
+                  "Write new stack id": {
+                    "Type": "Task",
+                    "Resource": "arn:aws:states:::dynamodb:updateItem",
+                    "Parameters": {
+                      "TableName": "${TableName}",
+                      "Key": {
+                        "Donor_id": {"S": "$.Donor_id.S"}
+                      },
+                      "UpdateExpression": "SET StackId=$.stackId"
                     },
                     "End": true
                   }
