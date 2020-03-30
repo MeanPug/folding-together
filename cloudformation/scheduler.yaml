@@ -99,6 +99,15 @@ Resources:
             Principal:
               Service: !Sub states.${AWS::Region}.${AWS::URLSuffix}
             Action: sts:AssumeRole
+      Policies:
+        - PolicyName: AllowDynamoUpdate
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:UpdateItem
+                Resource: '*'
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
 
@@ -133,63 +142,85 @@ Resources:
                     "Parameters": {
                       "TableName": "${TableName}",
                       "Key": {
-                        "Donor_id": {"S": "$.Donor_id.S"}
+                        "Donor_id": {"S.$": "$.Donor_id.S"}
                       },
-                      "UpdateExpression": "ADD Balance $.costSinceLastUpdate",
-                      "ReturnValues": "UPDATED_NEW"
+                      "UpdateExpression": "ADD Balance :cost",
+                      "ExpressionAttributeValues": {":cost": {"N.$": "$.costSinceLastUpdate"}},
+                      "ReturnValues": "ALL_NEW"
                     },
                     "Next": "Choose stack action"
                   },
                   "Choose stack action": {
                     "Type": "Choice",
+                    "InputPath": "$.Attributes",
                     "Choices": [
                       {
-                          "And": [
-                            {
-                              "Variable": "$.StackId",
-                              "StringGreaterThan": "arn"
-                            },
-                            {
-                              "Variable": "$.Balance",
-                              "NumericGreaterThan": 0
+                        "And": [
+                          {
+                            "Not": {
+                              "Variable": "$.StackId.S",
+                              "StringEquals": "empty"
                             }
-                          ],
-                          "Next": "Success Terminal"
+                          },
+                          {
+                            "Variable": "$.Balance.N",
+                            "NumericGreaterThan": 0
+                          }
+                        ],
+                        "Next": "Success Terminal"
                       },
                       {
                         "And": [
-                            {
-                              "Variable": "$.StackId",
-                              "StringGreaterThan": "arn"
-                            },
-                            {
-                              "Variable": "$.Balance",
-                              "NumericLessThanEquals": 0
+                          {
+                            "Not": {
+                              "Variable": "$.StackId.S",
+                              "StringEquals": "empty"
                             }
-                          ],
-                          "Next": "Stop CloudFormation Stack"
+                          },
+                          {
+                            "Variable": "$.Balance.N",
+                            "NumericLessThanEquals": 1
+                          }
+                        ],
+                        "Next": "Stop CloudFormation Stack"
                       },
                       {
-                        "Variable": "$.Balance",
-                        "NumericGreaterThan": 0,
+                        "And": [
+                          {
+                            "Variable": "$.StackId.S",
+                            "StringEquals": "empty"
+                          },
+                          {
+                            "Variable": "$.Balance.N",
+                            "NumericGreaterThan": 0
+                          }
+                        ],
                         "Next": "Start CloudFormation Stack"
                       },
                       {
-                        "Variable": "$.Balance",
+                        "Variable": "$.Balance.N",
                         "NumericLessThanEquals": 0,
                         "Next": "Success Terminal"
                       }
                     ],
-                    "Default": "Stop CloudFormation Stack"
+                    "Default": "Success Terminal"
                   },
                   "Start CloudFormation Stack": {
                     "Type": "Task",
                     "Resource": "arn:aws:lambda:us-east-1:451298871710:function:folding-together-launch-fah-prod-run",
+                    "ResultPath": "$.stackId",
+                    "Parameters": {
+                      "donor_id.$": "$.Donor_id.S",
+                      "donor_name": "Anon"
+                    },
                     "Next": "Write new stack id"
                   },
                   "Stop CloudFormation Stack": {
                     "Type": "Task",
                     "Resource": "arn:aws:lambda:us-east-1:451298871710:function:folding-together-terminate-fah-prod-run",
+                    "Parameters": {
+                      "stack_id.$": "$.StackId.S"
+                    },
                     "End": true
                   },
                   "Write new stack id": {
@@ -200,7 +231,8 @@ Resources:
                       "Key": {
                         "Donor_id": {"S": "$.Donor_id.S"}
                       },
-                      "UpdateExpression": "SET StackId=$.stackId"
+                      "UpdateExpression": "SET StackId=:stackId",
+                      "ExpressionAttributeValues": {":stackId": {"S.$": "$.stackId"}}
                     },
                     "Next": "Success Terminal"
                   },

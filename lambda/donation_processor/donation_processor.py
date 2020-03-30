@@ -5,7 +5,7 @@ import os
 
 
 # Function for executing athena queries
-def update_balance(amount, donor_id):
+def update_balance(amount, donor_id, donor_name):
     ddb_client = boto3.client('dynamodb')
     response = ddb_client.update_item(
         TableName=os.environ['TableName'],
@@ -17,10 +17,11 @@ def update_balance(amount, donor_id):
         ReturnValues='ALL_NEW',
         ReturnConsumedCapacity='NONE',
         ReturnItemCollectionMetrics='NONE',
-        UpdateExpression='ADD Balance :val',
+        UpdateExpression='ADD Balance :val, SET Donor_Name=:name, SET StackId=empty',
         # ConditionExpression='string',
         ExpressionAttributeValues={
-            ':val': {'N': str(amount)}
+            ':val': {'N': str(amount)},
+            ':name': {'S': str(donor_name)},
         }
     )
 
@@ -28,14 +29,15 @@ def update_balance(amount, donor_id):
 
 
 def lambda_handler(event, context):
-    # print(event)
     for record in event['Records']:
         payload = json.loads(record['body'])
-        # print(payload['donation']['amount'])
-        donor_id_string = str(payload['donor']['id'])
+        donor_info = payload['donor']
+
         new_balance = update_balance(
             payload['donation']['amount'],
-            donor_id_string)
-        print('New value for ' + donor_id_string +
-              ' is ' + str(new_balance) + ' cents.')
+            str(donor_info['id']),
+            str(donor_info['name']),
+        )
+
+        print('New value for ' + str(donor_info['id']) + ' is ' + str(new_balance) + ' cents.')
     return 'Success'
