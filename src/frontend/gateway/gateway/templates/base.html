@@ -22,6 +22,12 @@
       gtag('config', 'UA-162018467-1');
     </script>
 
+    <script type="text/javascript">
+        window.FOLD = {};
+    </script>
+    {% block head_scripts %}
+    {% endblock %}
+
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static "build/main.css" %}" />
 </head>
@@ -53,7 +59,7 @@
         </div>
     </section>
 
-    <section class="pt-4 px-4 md:px-12">
+    <section class="pt-4 pb-8 px-4 md:px-12">
         <h2 class="uppercase tracking-wide font-bold pb-4 md:pb-8">How Can I Help</h2>
 
         <ul class="flex flex-col md:flex-row items-start">
@@ -89,6 +95,9 @@
             </li>
         </ul>
     </section>
+
+    {% block after_content %}
+    {% endblock %}
 
     <script type="text/javascript" src="{% static "build/main.js" %}"></script>
 </body>

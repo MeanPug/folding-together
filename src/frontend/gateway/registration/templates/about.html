@@ -5,6 +5,12 @@
     <meta name="description" content="An alternative way for individuals to contribute compute resources for Covid-19 researchers to find a cure faster." />
 {% endblock %}
 
+{% block head_scripts %}
+    <script type="text/javascript">
+        window.FOLD.DONATION_COUNT = {{ donation_count }};
+    </script>
+{% endblock %}
+
 {% block content %}
     <h2 class="uppercase text-3xl tracking-wide font-bold pb-8">Folding@Together Makes It Easy To Power Research</h2>
 
@@ -37,4 +43,12 @@
         <li class="py-2">Mervin Johnsingh</li>
         <li class="py-2">Rishabh Chakrabarty</li>
     </ul>
+{% endblock %}
+
+{% block after_content %}
+    <section class="py-4 px-4 md:px-12 bg-gray-100">
+        <h2>Team Stats</h2>
+
+        <div class="pt-8" id="folding-team-stats"></div>
+    </section>
 {% endblock %}

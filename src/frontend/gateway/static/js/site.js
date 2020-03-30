@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import CheckoutForm from './components/CheckoutForm.jsx';
 import RecentDonations from './components/RecentDonations.jsx';
+import TeamStats from './components/TeamStats.jsx';
 import config from './config.js';
 
 (function() {
@@ -33,8 +34,13 @@ import config from './config.js';
         getDonations();
         // refresh donation list every 5s
         setInterval(getDonations, 5000);
+    }
 
-
+    const teamStats = document.getElementById('folding-team-stats');
+    if (teamStats) {
+        ReactDOM.render((
+            <TeamStats donationCount={window.FOLD.DONATION_COUNT} />
+        ), teamStats);
     }
 }());
 
