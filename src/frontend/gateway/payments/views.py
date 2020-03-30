@@ -6,7 +6,7 @@ from django.http.response import JsonResponse
 from django.utils.timezone import now
 from payments.forms import DonationForm
 from payments.models import Donation
-from payments import utils
+from payments import utils, mixins
 from registration.models import Donor
 import stripe
 import json
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 stripe.api_key = settings.STRIPE['SECRET_KEY']
 
 
-class DonateView(TemplateView):
+class DonateView(mixins.DonationDataMixin, TemplateView):
     template_name = 'donate.html'
 
     def post(self, request, *args, **kwargs):

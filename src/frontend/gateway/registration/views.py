@@ -1,16 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from payments.models import Donation
+from payments.mixins import DonationDataMixin
 
 
-class HomeView(TemplateView):
+class HomeView(DonationDataMixin, TemplateView):
     template_name = 'index.html'
 
 
-class AboutView(TemplateView):
+class AboutView(DonationDataMixin, TemplateView):
     template_name = 'about.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(AboutView, self).get_context_data(**kwargs)
-        context['donation_count'] = Donation.objects.count()
-        return context
