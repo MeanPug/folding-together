@@ -218,8 +218,8 @@ Resources:
                     "Resource": "arn:aws:lambda:us-east-1:451298871710:function:folding-together-launch-fah-prod-run",
                     "ResultPath": "$.stackId",
                     "Parameters": {
-                      "donor_id.$": "$.Donor_Id.S",
-                      "donor_name.$": "$.Donor_Name.S"
+                      "donor_id.$": "$.Attributes.Donor_id.S",
+                      "donor_name.$": "$.Attributes.Donor_Name.S"
                     },
                     "Next": "Write new stack id"
                   },
@@ -227,7 +227,7 @@ Resources:
                     "Type": "Task",
                     "Resource": "arn:aws:lambda:us-east-1:451298871710:function:folding-together-terminate-fah-prod-run",
                     "Parameters": {
-                      "stack_id.$": "$.StackId.S"
+                      "stack_id.$": "$.Attributes.StackId.S"
                     },
                     "End": true
                   },
@@ -237,7 +237,7 @@ Resources:
                     "Parameters": {
                       "TableName": "${TableName}",
                       "Key": {
-                        "Donor_id": {"S": "$.Donor_id.S"}
+                        "Donor_id": {"S.$": "$.Attributes.Donor_id.S"}
                       },
                       "UpdateExpression": "SET StackId=:stackId",
                       "ExpressionAttributeValues": {":stackId": {"S.$": "$.stackId"}}

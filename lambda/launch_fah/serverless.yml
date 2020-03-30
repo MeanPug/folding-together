@@ -53,6 +53,8 @@ provider:
     Action:
       - "iam:CreateRole"
       - "iam:DeleteRolePolicy"
+      - "iam:DetachRolePolicy"
+      - "iam:AttachRolePolicy"
       - "iam:PutRolePolicy"
       - "iam:DeleteRole"
       - "iam:CreateInstanceProfile"

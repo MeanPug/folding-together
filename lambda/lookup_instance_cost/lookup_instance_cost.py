@@ -8,7 +8,7 @@ scheduler_frequency_in_minutes = 5
 def lambda_handler(event, context):
     ec2_client = boto3.client('ec2')
     stack_id = event.get("StackId", "none")
-    if stack_id != "none":
+    if stack_id != "empty":
         stack_id = stack_id['S']
         response = ec2_client.describe_tags(
             Filters=[
@@ -27,7 +27,7 @@ def lambda_handler(event, context):
         try:
             instance_id = response['Tags'][0]['ResourceId']
         except IndexError:
-            return 0
+            return '0'
         response = ec2_client.describe_spot_instance_requests(
             Filters=[
                 {
@@ -38,6 +38,6 @@ def lambda_handler(event, context):
         )
         hourly_price_str = response['SpotInstanceRequests'][0]['ActualBlockHourlyPrice']
         hourly_price_decimal = Decimal(hourly_price_str.strip(' "'))
-        return -1 * hourly_price_decimal/60*scheduler_frequency_in_minutes
+        return str(-1 * hourly_price_decimal/60*scheduler_frequency_in_minutes)
     else:
-        return 0
+        return '0'
