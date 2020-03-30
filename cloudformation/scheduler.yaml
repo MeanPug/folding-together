@@ -187,7 +187,7 @@ Resources:
                           },
                           {
                             "Variable": "$.ConvertedNumbers.balance",
-                            "NumericLessThanEquals": 1
+                            "NumericLessThanEquals": 50
                           }
                         ],
                         "Next": "Stop CloudFormation Stack"
