@@ -38,6 +38,6 @@ def lambda_handler(event, context):
         )
         hourly_price_str = response['SpotInstanceRequests'][0]['ActualBlockHourlyPrice']
         hourly_price_decimal = Decimal(hourly_price_str.strip(' "'))
-        return hourly_price_decimal/60*scheduler_frequency_in_minutes
+        return -1 * hourly_price_decimal/60*scheduler_frequency_in_minutes
     else:
         return 0
