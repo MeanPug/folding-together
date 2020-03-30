@@ -4,11 +4,11 @@ import json
 import os
 
 
-def launch_stack(donor_name, template_url=None, subnet_ids=None, vpc_id=None, key_name=None):
+def launch_stack(donor_name, donor_id, template_url=None, subnet_ids=None, vpc_id=None, key_name=None):
     cloudformation = boto3.client('cloudformation')
 
     response = cloudformation.create_stack(
-        StackName=f'folding-together-solver-{donor_name.lower().replace(" ", "-").replace(".", "")}',
+        StackName=f'folding-together-solver-{donor_id}',
         TemplateURL=template_url,
         Parameters=[
             {
@@ -44,10 +44,11 @@ def launch_stack(donor_name, template_url=None, subnet_ids=None, vpc_id=None, ke
 
 
 def launch_fah_solver(event, context):
-    print(f'got donor {event["donor"]} to launch fah stack')
+    print(f'got donor {event["donor_name"]} to launch fah stack')
 
     stack_id = launch_stack(
-        event['donor'],
+        event['donor_name'],
+        event['donor_id'],
         template_url=os.getenv('TEMPLATE_URL'),
         subnet_ids=os.getenv('SUBNET_IDS'),
         vpc_id=os.getenv('VPC_ID'),

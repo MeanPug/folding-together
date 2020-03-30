@@ -11,11 +11,7 @@
 #
 # Happy Coding!
 
-service: folding-together-launch-fah
-
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
-# frameworkVersion: "=X.X.X"
+service: folding-together-terminate-fah
 
 provider:
   name: aws
@@ -63,13 +59,7 @@ provider:
 
 functions:
   run:
-    handler: handler.launch_fah_solver
-    environment:
-      TEMPLATE_URL: https://s3.amazonaws.com/folding-together-artifacts/cloudformation/foldingathome.yaml
-      SUBNET_IDS: subnet-2ec0fc10,subnet-75ba187b,subnet-8ba048ed,subnet-b868d0f5,subnet-c007f0e1
-      VPC_ID: vpc-394e4a43
-      KEY_NAME: folding_nodes
-
+    handler: handler.terminate_fah_solver
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
