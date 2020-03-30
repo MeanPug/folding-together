@@ -154,7 +154,7 @@ Resources:
                               "NumericGreaterThan": 0
                             }
                           ],
-                          "End": true
+                          "Next": "Success Terminal"
                       },
                       {
                         "And": [
@@ -177,7 +177,7 @@ Resources:
                       {
                         "Variable": "$.Balance",
                         "NumericLessThanEquals": 0,
-                        "End" true
+                        "Next": "Success Terminal"
                       }
                     ],
                     "Default": "Stop CloudFormation Stack"
@@ -189,7 +189,7 @@ Resources:
                   },
                   "Stop CloudFormation Stack": {
                     "Type": "Task",
-                    "Resource": "arn:lambda:us-east-1:451298871710:function:folding-together-terminate-fah-prod-run",
+                    "Resource": "arn:aws:lambda:us-east-1:451298871710:function:folding-together-terminate-fah-prod-run",
                     "End": true
                   },
                   "Write new stack id": {
@@ -202,7 +202,10 @@ Resources:
                       },
                       "UpdateExpression": "SET StackId=$.stackId"
                     },
-                    "End": true
+                    "Next": "Success Terminal"
+                  },
+                  "Success Terminal": {
+                    "Type": "Succeed"
                   }
                 }
               },
