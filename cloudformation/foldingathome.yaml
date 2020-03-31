@@ -180,6 +180,13 @@ Resources:
             # send success signal
             /usr/local/bin/cfn-signal --success true --stack ${AWS::StackName} --resource AutoScalingGroup --region ${AWS::Region}
 
+            # install cwagent
+            apt-get install collectd -y
+            wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+            dpkg -i -E ./amazon-cloudwatch-agent.deb
+            wget -O /opt/aws/amazon-cloudwatch-agent/bin/config.json https://s3.amazonaws.com/folding-together-public/cwagent-config.json
+            /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s
+
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
