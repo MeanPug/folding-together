@@ -109,7 +109,7 @@ class DonationDetailsView(TemplateView):
         except (KeyError, ObjectDoesNotExist):
             return Http404(f'donation with ID doesnt exist')
 
-        context['donation_id'] = instance.id
+        context['donation_id'] = instance.donor_id
         context['donor_name'] = instance.donor.name
         context['amount'] = instance.formatted_amount
         context['donor_time'] = instance.formatted_time
