@@ -233,6 +233,7 @@ Resources:
                 - 'ec2.amazonaws.com'
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
       Policies:
         - PolicyName: 'CustomHealthCheck'
           PolicyDocument:
@@ -244,4 +245,3 @@ Resources:
                 Condition:
                   StringEquals:
                     'aws:ResourceTag/aws:cloudformation:stack-name': !Ref 'AWS::StackName'
-

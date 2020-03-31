@@ -7,7 +7,7 @@ def get_canonical_status(stack_id, balance):
     """ the canonical status is a function of whether a stack has been spun up and the current balance on the account """
     if not stack_id:
         return 'QUEUED'
-    elif stack_id and balance > 100:
+    elif stack_id and balance >= 50:
         return 'PROCESSING'
     else:
         return 'FINISHED'
