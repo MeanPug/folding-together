@@ -1,5 +1,7 @@
 from django.utils.timezone import now as django_now
 from datetime import datetime
+import string
+import random
 
 
 def pretty_date(time=False):
@@ -45,3 +47,9 @@ def pretty_date(time=False):
     if day_diff < 365:
         return str(day_diff / 30) + " months ago"
     return str(day_diff / 365) + " years ago"
+
+
+def random_string(string_length=10):
+    """Generate a random string of fixed length """
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(string_length))

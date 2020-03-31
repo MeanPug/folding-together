@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Folding@Together | Donation By {{ donor_name }}</title>
+    <meta name="description" content="{{ donor_name }} donated {{ amount }} {{ donor_time }} to help researchers find a cure faster." />
+{% endblock %}
+
+{% block head_scripts %}
+    <script type="text/javascript">
+        window.FOLD.DONATION_ID = {{ donation_id }};
+        window.FOLD.DONATION_AMOUNT = "{{ amount }}";
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h1 class="pb-8 text-4xl">Donation by {{ donor_name }}</h1>
+
+    <h2 class="pt-3 pb-4">Donation Stats</h2>
+
+    <div id="folding-donation-stats"></div>
+{% endblock %}

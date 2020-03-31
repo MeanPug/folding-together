@@ -33,7 +33,11 @@ def donation_status(event, context):
     except IndexError:
         return {
             'statusCode': 404,
-            'body': json.dumps({'message': f'no donation with ID {donation_id} exists'})
+            'body': json.dumps({'message': f'no donation with ID {donation_id} exists'}),
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': True
+            }
         }
 
     body = {
@@ -45,7 +49,11 @@ def donation_status(event, context):
 
     response = {
         "statusCode": 200,
-        "body": json.dumps(body)
+        "body": json.dumps(body),
+        'headers': {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': True
+        }
     }
 
     return response

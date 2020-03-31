@@ -5,6 +5,7 @@ import React from 'react';
 import CheckoutForm from './components/CheckoutForm.jsx';
 import RecentDonations from './components/RecentDonations.jsx';
 import TeamStats from './components/TeamStats.jsx';
+import DonationStats from './components/DonationStats.jsx';
 import config from './config.js';
 
 (function() {
@@ -41,6 +42,13 @@ import config from './config.js';
         ReactDOM.render((
             <TeamStats donationCount={window.FOLD.DONATION_COUNT} />
         ), teamStats);
+    }
+
+    const donationStats = document.getElementById('folding-donation-stats');
+    if (donationStats) {
+        ReactDOM.render((
+            <DonationStats donationId={window.FOLD.DONATION_ID} initialDonationAmount={window.FOLD.DONATION_AMOUNT} />
+        ), donationStats);
     }
 }());
 

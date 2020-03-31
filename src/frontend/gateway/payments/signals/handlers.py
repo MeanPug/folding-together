@@ -1,7 +1,11 @@
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.utils.timezone import now
+from django.utils.text import slugify
 from payments.signals import donation_charged
+from payments.models import Donation
+from payments import utils
 import boto3
 import json
 import logging
@@ -33,3 +37,9 @@ def handle_donation_charged(sender, donation, **kwargs):
 
     donation.new_donation_event_dispatch_time = now()
     donation.save()
+
+
+@receiver(pre_save, sender=Donation)
+def set_donation_slug(sender, instance=None, **kwargs):
+    if not instance.slug:
+        instance.slug = f'{slugify(instance.donor.name)}-{utils.random_string(8).lower()}'

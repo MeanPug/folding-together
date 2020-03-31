@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import TemplateView, View
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse, Http404
 from django.utils.timezone import now
 from payments.forms import DonationForm
 from payments.models import Donation
@@ -97,6 +98,25 @@ class DonationReceivedView(TemplateView):
     template_name = 'donation_received.html'
 
 
+class DonationDetailsView(TemplateView):
+    template_name = 'donation_details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DonationDetailsView, self).get_context_data(**kwargs)
+        try:
+            slug = kwargs['donation_slug']
+            instance = Donation.objects.get(slug=slug)
+        except (KeyError, ObjectDoesNotExist):
+            return Http404(f'donation with ID doesnt exist')
+
+        context['donation_id'] = instance.id
+        context['donor_name'] = instance.donor.name
+        context['amount'] = instance.formatted_amount
+        context['donor_time'] = instance.formatted_time
+
+        return context
+
+
 class RecentDonationsView(View):
     def get(self, request, *args, **kwargs):
         count = int(request.GET.get('n', 10))
@@ -107,6 +127,8 @@ class RecentDonationsView(View):
             'data': [{
                 'name': d.donor.first_name,
                 'time_canonical': utils.pretty_date(d.created_time),
-                'amount': d.formatted_amount
+                'amount': d.formatted_amount,
+                'url': reverse('donation_details', args=(d.slug,))
             } for d in donations]
         })
+
