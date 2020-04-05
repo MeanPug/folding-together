@@ -28,14 +28,22 @@ const TeamStats = ({ donationCount }) => {
     }
 
     const retrieveFahData = async function() {
-        const apiRoute = `https://cors-anywhere.herokuapp.com/https://api.foldingathome.org/team/${config.TEAM_ID}`;
-        const response = await fetch(apiRoute, {
+        const teamDataRoute = `https://cors-anywhere.herokuapp.com/https://api.foldingathome.org/team/${config.TEAM_ID}`;
+        const teamCountRoute = `https://cors-anywhere.herokuapp.com/https://api.foldingathome.org/team/count`;
+
+        const teamDataResponse = await fetch(teamDataRoute, {
             method: 'GET',
             headers: {
                 'Accepts': 'application/json'
             }
         });
-        const data = await response.json();
+        const teamCountResponse = await fetch(teamCountRoute, {
+            method: 'GET'
+        });
+
+        const data = await teamDataResponse.json();
+        data.teams = await teamCountResponse.text();
+
         setFahData(data);
     };
 
