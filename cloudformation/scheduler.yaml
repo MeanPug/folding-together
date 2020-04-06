@@ -172,7 +172,7 @@ Resources:
                           },
                           {
                             "Variable": "$.ConvertedNumbers.balance",
-                            "NumericGreaterThan": 0
+                            "NumericGreaterThan": 20
                           }
                         ],
                         "Next": "Success Terminal"
@@ -187,7 +187,7 @@ Resources:
                           },
                           {
                             "Variable": "$.ConvertedNumbers.balance",
-                            "NumericLessThanEquals": 50
+                            "NumericLessThanEquals": 20
                           }
                         ],
                         "Next": "Stop CloudFormation Stack"
