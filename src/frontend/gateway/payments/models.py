@@ -28,6 +28,16 @@ class Donation(models.Model):
     def formatted_time(self):
         return utils.pretty_date(self.created_time)
 
+    @property
+    def amount_cents_after_processing_fees(self):
+        """ the amount in cents received, after Stripe processing fees have been deducted
+        :return `int`
+        """
+        # stripe charges a .30c flat fee + 2.9% for processing
+        stripe_flat = 30
+        stripe_dynamic = .029
+        return self.amount_cents - int(((self.amount_cents * stripe_dynamic) + stripe_flat))
+
     def finalize_charge(self):
         """ runs any final work at the end of the stripe payment ceremony """
         self.charged_time = now()

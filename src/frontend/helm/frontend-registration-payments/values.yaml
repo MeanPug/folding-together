@@ -22,6 +22,7 @@ nginx:
 application:
   env:
     aws_sqs_donation_queue: https://queue.amazonaws.com/451298871710/folding-together-compute-ProcessorStack-T2XWYI7UGHAI-Queue-1027LEDRHO9YJ
+    #debug_on: true
 
 imagePullSecrets: []
 nameOverride: ""

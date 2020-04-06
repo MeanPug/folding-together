@@ -24,7 +24,7 @@ def handle_donation_charged(sender, donation, **kwargs):
             'id': donation.donor.id
         },
         'donation': {
-            'amount': donation.amount_cents
+            'amount': donation.amount_cents_after_processing_fees
         }
     }
 

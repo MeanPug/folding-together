@@ -70,4 +70,8 @@ Common env
     secretKeyRef:
       name: stripe-keys
       key: secret_key
+{{- if .Values.application.env.debug_on }}
+- name: DEBUG
+  value: "1"
+{{- end -}}
 {{- end -}}
